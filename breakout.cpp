@@ -166,29 +166,29 @@ public:
                                 paddle.region.w, paddle.region.h};
         if (SDL_HasIntersection(&ballBounds, &paddleBounds)){
             //TODO: change velocity.x basing on the hit position on the paddle.
-            velocity.y *= -1;
+            velocity.y = -velocity.y;
         }
         // find if there's intersection with bricks
-        size_t i = 0;
-        for(auto &brick : bricks){
+        for(size_t i = 0; i < bricks.size(); i++){
+            auto &brick = bricks[i];
             auto brickBounds = SDL_Rect{ brick.pos.x - brick.origin.x, brick.pos.y - brick.origin.y, 
                                         brick.region.w, brick.region.h };
             if (SDL_HasIntersection(&ballBounds, &brickBounds) && hitpoints[i] >= 0){
                 // hitting from the right
                 if (ballBounds.x >= brickBounds.w + brickBounds.x && velocity.x < 0){
-                    velocity.x *= -1;
+                    velocity.x = -velocity.x;
                 }
                 // hitting from the left
                 if (ballBounds.x < brickBounds.x && velocity.x > 0){
-                    velocity.x *= -1;
+                    velocity.x = -velocity.x;
                 }
                 // hitting from the bottom
                 if (ballBounds.y >= brickBounds.h + brickBounds.y - 5 && velocity.y < 0){
-                    velocity.y *= -1;
+                    velocity.y = -velocity.y;
                 }
                 // hitting from the top
                 if (ballBounds.y < brickBounds.y && velocity.y > 0){
-                    velocity.y *= -1;
+                    velocity.y = -velocity.y;
                 }
                 hitpoints[i]--;
                 gameState.score+=5;
@@ -197,7 +197,6 @@ public:
                 }
                 break;
             }
-            i++;
         }
         // update ball pos
         ball.pos = newBallPos;
